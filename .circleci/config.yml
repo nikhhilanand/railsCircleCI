@@ -1,14 +1,14 @@
 jobs:
     bundler-audit:
-    machine: true
-    steps:
-      - checkout
-
-      - run: docker run --rm -v $(pwd):/src -w /src hysnsec/bundle-audit check --format json --output bundle-audit-output.json || true 
-
-      - store_artifacts:
-          path: bundle-audit-output.json
-          destination: bundler-audit-artifact
+        machine: true
+        steps:
+          - checkout
+    
+          - run: docker run --rm -v $(pwd):/src -w /src hysnsec/bundle-audit check --format json --output bundle-audit-output.json || true 
+    
+          - store_artifacts:
+              path: bundle-audit-output.json
+              destination: bundler-audit-artifact
 
 workflows:
   version: 2
