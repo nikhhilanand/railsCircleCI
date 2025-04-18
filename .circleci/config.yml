@@ -1,44 +1,20 @@
 jobs:
-  build:
-    docker:
-      - image: python:3.6                   # similar to "image" in GitLab
+    bundler-audit:
+    machine: true
     steps:
       - checkout
-      - run: |                              # similar to "script" in GitLab
-          pip install -r requirements.txt
-          python manage.py check
 
-  test:
-    docker:
-      - image: python:3.6
-    steps:
-      - checkout
-      - run: |
-          pip install -r requirements.txt
-          python manage.py test taskManager
+      - run: docker run --rm -v $(pwd):/src -w /src hysnsec/bundle-audit check --format json --output bundle-audit-output.json || true 
 
-  integration:
-    docker:
-      - image: python:3.6
-    steps:
-      - checkout
-      - run:
-          command: |
-            echo "This is an integration step"
-            exit 1
-
-  prod:
-    docker:
-      - image: python:3.6
-    steps:
-      - checkout
-      - run: echo "This is a deploy step"
+      - store_artifacts:
+          path: bundle-audit-output.json
+          destination: bundler-audit-artifact
 
 workflows:
   version: 2
-  django:
+  ruby-railsCircleCI:
     jobs:
-      - build
+      - bundler-audit
       - test
       - integration
       - prod
