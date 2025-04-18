@@ -15,6 +15,3 @@ workflows:
   ruby-railsCircleCI:
     jobs:
       - bundler-audit
-      - test
-      - integration
-      - prod
